@@ -14,6 +14,12 @@ Globals:
     Timeout: 360
     MemorySize: 2048
 
+Parameters:
+  Stage:
+    Type: String
+    Default: dev
+
+
 Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -31,3 +37,10 @@ Resources:
           PARAM1: VALUE
 
 
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function c
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  WebEndpoint:
+    Description: "API Gateway endpoint URL for dev environment for First Function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
