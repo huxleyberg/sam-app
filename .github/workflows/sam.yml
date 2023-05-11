@@ -1,0 +1,44 @@
+name: Deploy Lambda with AWS SAM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+        APP_ENV: 'dev'
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: aws-actions/setup-sam@v1
+
+    - name: Setup AWS CLI
+      uses: aws-actions/configure-aws-cli@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: setup go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.16'
+
+    - name: download dependencies
+      run: go mod tidy -go=1.19
+
+    - name: Build app with SAM
+      run: sam build
+
+    - name: Package
+      run: |
+        sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket ${{ secrets.S3_BUCKET }}
+
+    - name: Deploy
+      run: |
+        sam deploy --template-file packaged.yaml --stack-name my-stack-${{ env.APP_ENV }} --capabilities CAPABILITY_IAM --region us-east-1
+
