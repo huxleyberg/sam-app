@@ -13,8 +13,8 @@ jobs:
         APP_ENV: 'dev'
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: aws-actions/setup-sam@v1
+    - name: Checkout code
+      uses: actions/checkout@v2
 
     - name: Setup AWS CLI
       uses: aws-actions/configure-aws-cli@v1
