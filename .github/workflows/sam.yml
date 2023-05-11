@@ -1,4 +1,4 @@
-name: Deploy Lambda with AWS SAM
+name: Deploy Lambda with AWS SAM CI/CD
 
 on:
   push:
