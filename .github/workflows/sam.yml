@@ -39,9 +39,16 @@ jobs:
 
     - name: Package
       run: |
-        sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket ${{ secrets.S3_BUCKET }}
+        sam package --template-file .aws-sam/build/template.yaml \
+        --s3-bucket ${{ secrets.S3_BUCKET }} \
+        --output-template-file packaged.yaml 
 
     - name: Deploy
       run: |
-        sam deploy --template-file packaged.yaml --stack-name my-stack-${{ env.APP_ENV }} --capabilities CAPABILITY_IAM --region us-east-1
+        sam deploy --template-file packaged.yaml \
+        --parameter-overrides \
+            Stage=${{ env.ENV_APP }} \
+        --stack-name my-stack-${{ env.ENV_APP }} \
+        --capabilities CAPABILITY_IAM \
+        --no-confirm-changeset
 
