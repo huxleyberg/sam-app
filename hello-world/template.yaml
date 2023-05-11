@@ -72,7 +72,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   Endpoint:
     Description: "API Gateway endpoint URL for dev environment for First Function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
+    Value: !Sub "https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
     Export:
       Name: !Sub ${ServiceName}-endpoint
   HelloWorldFunction:
