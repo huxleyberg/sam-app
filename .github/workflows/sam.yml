@@ -47,8 +47,8 @@ jobs:
       run: |
         sam deploy --template-file packaged.yaml \
         --parameter-overrides \
-            Stage=${{ env.ENV_APP }} \
-        --stack-name my-stack-${{ env.ENV_APP }} \
+            Stage=${{ env.APP_ENV }} \
+        --stack-name my-stack-${{ env.APP_ENV }} \
         --capabilities CAPABILITY_IAM \
         --no-confirm-changeset
 
