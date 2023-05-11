@@ -34,47 +34,20 @@ Resources:
         ApiEvent:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            RestApiId: !Ref ApiGateway
             Path: /hello
             Method: GET
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
           PARAM1: VALUE
 
-  ApiGateway:
-    Type: 'AWS::Serverless::Api'
-    Properties:
-      StageName: dev
-      DefinitionBody:
-        swagger: '2.0'
-        info:
-          version: '1.0'
-          title: My API
-        paths:
-          /hello:
-            get:
-              produces:
-                - application/json
-              responses:
-                '200':
-                  description: OK
-                  schema:
-                    type: object
-                    properties:
-                      message:
-                        type: string
-        x-amazon-apigateway-binary-media-types:
-          - '*/*'
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  Endpoint:
+  WebEndpoint:
     Description: "API Gateway endpoint URL for dev environment for First Function"
-    Value: !Sub "https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
-    Export:
-      Name: !Sub ${ServiceName}-endpoint
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/"
   HelloWorldFunction:
     Description: "First Lambda Function ARN"
     Value: !GetAtt HelloWorldFunction.Arn
